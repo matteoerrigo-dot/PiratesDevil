@@ -1,3 +1,31 @@
+// ======================
+// CAPTAINS SYSTEM
+// ======================
+
+const captains = {
+  luffy: {
+    id: "luffy",
+    name: "Monkey D. Luffy",
+    bonusText: "+1 puissance pour tous les alliés",
+
+    applyBonus(card) {
+      card.power += 1;
+    }
+  },
+
+  zoro: {
+    id: "zoro",
+    name: "Roronoa Zoro",
+    bonusText: "+2 puissance pour les attaquants",
+
+    applyBonus(card) {
+      if (card.type === "attack") {
+        card.power += 2;
+      }
+    }
+  }
+};
+
 import { abilities } from "../data/abilities.js";
 import { captainAbilities } from "../data/captains.js";
 
