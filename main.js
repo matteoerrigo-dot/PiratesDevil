@@ -39,11 +39,37 @@ function render() {
   div.innerHTML = `
     <h2>Turn ${game.turn}</h2>
     <p>Energy: ${player.energy}</p>
+
+    <h3>Hand</h3>
+    <div id="hand">
+      ${player.hand.map((c, i) => `
+        <div class="card" data-index="${i}">
+          ${c.name}<br>
+          Cost: ${c.cost}<br>
+          Power: ${c.power}
+        </div>
+      `).join("")}
+    </div>
+
     <h3>Board</h3>
     ${player.board.map(c =>
       `<div class="card">${c.name} (${c.power})</div>`
     ).join("")}
   `;
-}
 
-render();
+  // clic sur carte
+  document.querySelectorAll(".card").forEach(el => {
+    el.onclick = () => {
+      const index = el.dataset.index;
+      if (index === undefined) return;
+
+      const card = player.hand[index];
+
+      if (card.cost <= player.energy) {
+        game.playCard(player, card);
+        player.hand.splice(index, 1);
+        render();
+      }
+    };
+  });
+}
