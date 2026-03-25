@@ -5,14 +5,31 @@
   <title>Grand Line Clash</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <h1>🏴‍☠️ Grand Line Clash</h1>
 
-<div id="game"></div>
+<div id="ui">
+  <div id="info">
+    <p>Turn: <span id="turn">1</span></p>
+    <p>Energy: <span id="energy">1</span></p>
+  </div>
 
-<button id="nextTurn">Next Turn</button>
+  <div id="board">
+    <h2>Board</h2>
+    <div id="boardCards"></div>
+  </div>
 
-<script src="script.js"></script>
+  <div id="hand">
+    <h2>Hand</h2>
+    <div id="handCards"></div>
+  </div>
+
+  <button id="nextTurn">Next Turn</button>
+</div>
+
+<script type="module" src="main.js"></script>
+
 </body>
 </html>
