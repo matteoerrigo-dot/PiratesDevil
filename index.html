@@ -1,35 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Grand Line Clash</title>
+  <title>Pirates Devil</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>🏴‍☠️ Grand Line Clash</h1>
+  <h1>🏴‍☠️ Pirates Devil</h1>
 
-<div id="ui">
-  <div id="info">
-    <p>Turn: <span id="turn">1</span></p>
-    <p>Energy: <span id="energy">1</span></p>
+  <!-- CAPTAIN -->
+  <div id="captainPanel">
+    🏴‍☠️ Capitaine :
+    <strong id="captainName"></strong>
+    <br>
+    Bonus : <span id="captainBonus"></span>
   </div>
 
-  <div id="board">
-    <h2>Board</h2>
-    <div id="boardCards"></div>
+  <!-- GAME INFO -->
+  <div id="gameInfo">
+    <p>Tour : <span id="turn"></span></p>
+    <p>Énergie : <span id="energy"></span></p>
+    <button onclick="nextTurn()">Fin du tour</button>
   </div>
 
-  <div id="hand">
-    <h2>Hand</h2>
-    <div id="handCards"></div>
-  </div>
+  <!-- BOARD -->
+  <h2>⚔️ Équipage (Board)</h2>
+  <div id="board" class="zone"></div>
 
-  <button id="nextTurn">Next Turn</button>
-</div>
+  <!-- HAND -->
+  <h2>🃏 Main</h2>
+  <div id="hand" class="zone"></div>
 
-<script type="module" src="main.js"></script>
+  <script src="game.js"></script>
 
 </body>
 </html>
