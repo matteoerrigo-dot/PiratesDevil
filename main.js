@@ -1,75 +1,94 @@
-import { Game } from "./engine/game.js";
-import { Player } from "./engine/player.js";
-import { Island } from "./engine/island.js";
-import { cards } from "./data/cards.js";
-import { botPlay } from "./engine/bot.js";
+let turn = 1;
+let energy = 1;
 
-const player = new Player(
-  "player",
-  [cards.luffy, cards.zoro],
-  "crewBuff"
-);
+const turnEl = document.getElementById("turn");
+const energyEl = document.getElementById("energy");
+const handDiv = document.getElementById("handCards");
+const boardDiv = document.getElementById("boardCards");
 
-const bot = new Player(
-  "bot",
-  [cards.zoro],
-  "fighterBonus"
-);
-
-player.hand = [...player.deck];
-bot.hand = [...bot.deck];
-
-const islands = [
-  new Island(1),
-  new Island(2),
-  new Island(3)
+const deck = [
+  { name: "Luffy", cost: 1, power: 2 },
+  { name: "Zoro", cost: 2, power: 4 },
+  { name: "Nami", cost: 1, power: 1 },
+  { name: "Sanji", cost: 3, power: 5 },
+  { name: "Usopp", cost: 2, power: 3 }
 ];
 
-const game = new Game(player, bot, islands);
+let hand = [];
+let board = [];
 
-document.getElementById("nextTurn").onclick = () => {
-  botPlay(game);
-  game.nextTurn();
-  render();
-};
+function updateUI() {
+  turnEl.textContent = turn;
+  energyEl.textContent = energy;
 
-function render() {
-  const div = document.getElementById("game");
+  renderHand();
+  renderBoard();
+}
 
-  div.innerHTML = `
-    <h2>Turn ${game.turn}</h2>
-    <p>Energy: ${player.energy}</p>
+function drawCard() {
+  if (deck.length > 0) {
+    hand.push(deck.shift());
+  }
+}
 
-    <h3>Hand</h3>
-    <div id="hand">
-      ${player.hand.map((c, i) => `
-        <div class="card" data-index="${i}">
-          ${c.name}<br>
-          Cost: ${c.cost}<br>
-          Power: ${c.power}
-        </div>
-      `).join("")}
-    </div>
+function renderHand() {
+  handDiv.innerHTML = "";
 
-    <h3>Board</h3>
-    ${player.board.map(c =>
-      `<div class="card">${c.name} (${c.power})</div>`
-    ).join("")}
-  `;
+  hand.forEach((card, index) => {
+    const div = document.createElement("div");
+    div.className = "card";
 
-  // clic sur carte
-  document.querySelectorAll(".card").forEach(el => {
-    el.onclick = () => {
-      const index = el.dataset.index;
-      if (index === undefined) return;
+    div.innerHTML = `
+      <strong>${card.name}</strong>
+      <div class="cost">Cost: ${card.cost}</div>
+      <div class="power">Power: ${card.power}</div>
+    `;
 
-      const card = player.hand[index];
+    div.onclick = () => playCard(index);
 
-      if (card.cost <= player.energy) {
-        game.playCard(player, card);
-        player.hand.splice(index, 1);
-        render();
-      }
-    };
+    handDiv.appendChild(div);
   });
 }
+
+function renderBoard() {
+  boardDiv.innerHTML = "";
+
+  board.forEach(card => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <strong>${card.name}</strong>
+      <div class="power">⚔ ${card.power}</div>
+    `;
+
+    boardDiv.appendChild(div);
+  });
+}
+
+function playCard(index) {
+  const card = hand[index];
+
+  if (card.cost > energy) {
+    alert("Not enough energy!");
+    return;
+  }
+
+  energy -= card.cost;
+  board.push(card);
+  hand.splice(index, 1);
+
+  updateUI();
+}
+
+document.getElementById("nextTurn").onclick = () => {
+  turn++;
+  energy = turn;
+  drawCard();
+  updateUI();
+};
+
+drawCard();
+drawCard();
+drawCard();
+updateUI();
